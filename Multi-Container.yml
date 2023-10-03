@@ -1,0 +1,28 @@
+### ref 
+# https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: yellow
+  name: yellow
+spec:
+  containers:
+  - image: busybox
+    name: lemon
+    command: [ "sleep" ]
+    args: [ "1000" ]
+    resources: {}
+
+  - image: redis
+    name: gold
+    command: [ "sleep" ]
+    args: [ "1000" ]
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+
