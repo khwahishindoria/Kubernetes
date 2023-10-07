@@ -1,3 +1,4 @@
+https://v1-27.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/
 1. Upgrade master node
     # Upgrade Kubeadm
     
@@ -17,6 +18,7 @@
     sudo systemctl restart kubelet
 
 2. Upgrade worker node
+https://v1-27.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/upgrading-linux-nodes/
 
     
     apt-mark unhold kubeadm && \
