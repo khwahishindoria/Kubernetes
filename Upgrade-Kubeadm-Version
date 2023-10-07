@@ -1,0 +1,38 @@
+1. Upgrade master node
+    # Upgrade Kubeadm
+    
+    apt-mark unhold kubeadm && \
+    apt-get update && apt-get install -y kubeadm=1.27.0-00 && \
+    apt-mark hold kubeadm
+    kubeadm version
+    kubeadm upgrade plan
+    
+    # Upgrade kubelet and kubectl 
+    
+    apt-mark unhold kubelet kubectl && \
+    apt-get update && apt-get install -y kubelet=1.27.0-00 kubectl=1.27.0-00 && \
+    apt-mark hold kubelet kubectl
+    
+    sudo systemctl daemon-reload
+    sudo systemctl restart kubelet
+
+2. Upgrade worker node
+
+    
+    apt-mark unhold kubeadm && \
+    apt-get update && apt-get install -y kubeadm=1.27.0-00 && \
+    apt-mark hold kubeadm
+    
+    kubectl drain node01 --ignore-daemonsets 
+    
+    
+    
+    apt-mark unhold kubelet kubectl && \
+    apt-get update && apt-get install -y kubelet=1.27.0-00 kubectl=1.27.0-00 && \
+    apt-mark hold kubelet kubectl
+    
+    
+    sudo systemctl daemon-reload
+    sudo systemctl restart kubelet
+    
+    kubectl uncordon node01 
