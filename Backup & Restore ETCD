@@ -1,0 +1,16 @@
+https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/
+
+1. take backup
+ETCDCTL_API=3 etcdctl --endpoints=https://127.0.0.1:2379 \
+--cacert=/etc/kubernetes/pki/etcd/ca.crt \
+--cert=/etc/kubernetes/pki/etcd/server.crt \
+--key=/etc/kubernetes/pki/etcd/server.key \
+snapshot save /opt/snapshot-pre-boot.db
+
+2. restore db
+
+ETCDCTL_API=3 etcdctl  --data-dir /var/lib/etcd-from-backup \
+snapshot restore /opt/snapshot-pre-boot.db
+
+3. update the /etc/kubernetes/manifests/etcd.yaml
+  With this change, /var/lib/etcd on the container points to /var/lib/etcd-from-backup on the controlplane (which is what we want).
