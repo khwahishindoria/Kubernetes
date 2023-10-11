@@ -7,3 +7,9 @@ openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt
    Add lines in openssl.cnf and specify the [ alt names ]
   2. openssl req -new -key apiserver.key -subj "/CN=kube-apiserver" -out apiserver.csr -config openssl.cnf
   3. openssl x509 -req -in apiserver.csr -CA ca.crt -CAKey ca.key  -out apiserver.crt
+
+
+How to view Ceritificate Details on Kubernetes
+
+Decode cert 
+$ openssl x509 -in server.crt -text -noout
