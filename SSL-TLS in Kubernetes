@@ -1,3 +1,4 @@
+###  https://kubernetes.io/docs/tasks/administer-cluster/certificates/  
 openssl genrsa -out ca.key 2048
 openssl req -new -key ca.key -subj "/CN=KUBERNETES-CA" -out ca.csr   ## CN --> Common Name
 openssl x509 -req -in ca.csr -signkey ca.key -out ca.crt
@@ -13,3 +14,6 @@ How to view Ceritificate Details on Kubernetes
 
 Decode cert 
 $ openssl x509 -in server.crt -text -noout
+
+
+https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/   # managing tls in a cluster
