@@ -37,3 +37,10 @@ https://kubernetes.io/docs/tasks/tls/managing-tls-in-a-cluster/   # managing tls
 3. Approve the csr
      kubectl certificate approve akshay
      kubectl get csr
+   To reject the csr
+      kubectl certificate deny agent-smith
+   TO Delete the csr
+      kubectl delete csr agent-smith 
+
+Note:- TO check the csr request in yaml
+  kubectl get csr agent-smith -o yaml
