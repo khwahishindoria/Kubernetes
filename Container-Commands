@@ -1,0 +1,4 @@
+apt update
+apt-get update
+apt-get install net-tools
+apt-get install default-mysql-client
