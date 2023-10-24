@@ -1,0 +1,10 @@
+Create Mysql deployment
+Create service
+ kubectl create service clusterip mysql-backend --tcp=3306:3306 --dry-run=client -o yaml > mysql-svc.yaml
+
+Create Nginx container and install mysql client to access mysql.
+  kubectl run --image nginx nginx
+  apt update
+  apt-get update
+  apt-get install net-tools -y
+  apt-get install default-mysql-client -y
