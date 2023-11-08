@@ -1,0 +1,1 @@
+curl -v -k https://192.20.56.3:6443/api/v1/pods/
