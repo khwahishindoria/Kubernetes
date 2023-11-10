@@ -2,3 +2,5 @@ curl -v -k https://192.20.56.3:6443/api/v1/pods/
 
 
 curl -v -k https://192.20.56.3:6443/api/v1/pods/ -u "john:wick"
+
+curl -v -k https://192.20.56.3:6443/api/v1/pods/ --key user.key cert user.crt cacert ca.crt
