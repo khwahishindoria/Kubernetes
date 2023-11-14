@@ -5,6 +5,9 @@
 kubectl config set-context --current --namespace=alpha
 
 
+export drc="--dry-run=client -oyaml"
+export drs="--dry-run=server -oyaml"
+
 function ns(){
         kubectl config set-context --current --namespace=$1
 }
