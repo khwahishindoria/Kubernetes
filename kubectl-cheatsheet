@@ -11,7 +11,9 @@ export drs="--dry-run=server -oyaml"
 function ns(){
         kubectl config set-context --current --namespace=$1
 }
+kubectl get nodes -o jsonpath='{$.items[*].status.addresses[*].address}'
 
+kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'
 ########### ######################  Aliases #################################
 alias k='kubectl'
 alias kg='kubectl get'
