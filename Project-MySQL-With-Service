@@ -1,4 +1,6 @@
 Create Mysql deployment
+ kubectl run --image mysql mysql --env="MYSQL_ROOT_PASSWORD=root"
+
 Create service
  kubectl create service clusterip mysql-backend --tcp=3306:3306 --dry-run=client -o yaml > mysql-svc.yaml
 
