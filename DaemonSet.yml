@@ -15,22 +15,13 @@ spec:
                 name: elasticsearch
 
         spec:
-            toleration:
-                affinity:
-                    nodeAffinity:
-                        requiredDuringSchedulingIgnoredDuringExecution:
-                            nodeSelectorTerms:
-                               - matchExpressions:
-                                    - key: kubernetes.io/hostname
-                                      operator: In
-                                      values:
-                                        - controlplane
             containers:
                 - name: elasticsearch
                   image: registry.k8s.io/fluentd-elasticsearch:1.20
                   resources:
-                    cpu: 1
-                    memory: 1Gi
-                  limit:
-                    cpu: 2
-                    memory: 2Gi 
+                    requests:
+                      cpu: 1
+                      memory: 1Gi
+                    limits:
+                      cpu: 2
+                      memory: 2Gi 

@@ -1,0 +1,86 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: internal
+
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              name: payroll
+          
+      ports:
+       - protocol: TCP
+         port: 8080
+    - to:
+        - podSelector:
+            matchLabels:
+              name: mysql
+          
+      ports:
+       - protocol: TCP
+         port: 3306
+
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: test-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      env: prod
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              env: prod
+
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-prod-np
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: nginx-prod
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: nginx-qa
+          namespaceSelector:
+            matchLabels:
+              env: qa
+
+      ports:
+        - protocol: TCP
+          port: 80
+    - from:
+        - podSelector:
+            matchLabels:
+              app: nginx-demo
+      ports:
+        - protocol: TCP
+          port: 80
+
+
