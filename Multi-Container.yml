@@ -1,5 +1,5 @@
 ### ref 
-# https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
+# https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/  
 
 apiVersion: v1
 kind: Pod
@@ -26,3 +26,14 @@ spec:
 status: {}
 
 
+
+
+- image: kodekloud/filebeat-configured
+    imagePullPolicy: Always
+    name: sidecar
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    - mountPath: /var/log/event-simulator
+      name: log-volume
+      readOnly: true

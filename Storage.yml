@@ -1,0 +1,157 @@
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage/
+# Volumes - mound directory from host
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+      - name: data-vol
+        mountPath: /tmpdata
+      - name: file-vol
+        mountPath: /tmp/config.txt
+    resources: {}
+  volumes:
+    - name: data-vol
+      hostPath:
+        path: /tmp/data
+        type: Directory
+    - name: file-vol
+      hostPath:
+        path: /tmp/myfile.txt
+        type: FileOrCreate
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+# Persistent Volumes
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv0003
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/data
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: slow
+
+# Persistent Volumes Claims
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: slow
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 3Gi
+
+
+# PVC in Pods
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/tmp"
+        name: my-vol
+  volumes:
+    - name: my-vol
+      persistentVolumeClaim:
+        claimName: myclaim
+
+
+######  KodeKloud Exercises
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 100Mi
+  hostPath:
+    path: /pv/log
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: 
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-log-1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi
+  storageClassName: manual
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  storageClassName: local-storage
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:alpine
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: my-vol
+  volumes:
+    - name: my-vol
+      persistentVolumeClaim:
+        claimName: local-pvc
+
+# storage class
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: delayed-volume-sc
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer

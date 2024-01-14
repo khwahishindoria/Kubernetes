@@ -1,0 +1,125 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeName: node01
+
+
+
+# Taints and Tolerations
+
+kubectl taint nodes controlplane type=restricted:NoSchedule
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-taints-tolerations
+  labels:
+    env: prod
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "allowed"
+      effect: "NoSchedule"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-taints-tolerations
+  labels:
+    env: prod
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "restricted"
+      effect: "NoSchedule"
+
+
+# Node Selector
+
+k label nodes controlplane type=restricted
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-taints-tolerations
+  labels:
+    env: prod
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    type: restricted
+
+
+# Node Affinity
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-node-affinity
+  labels:
+    env: prod
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: "DoesNotExist"
+
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: "In"
+                values:
+                  - node01
+
+
+# Resource Management for Pods and Containers
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-requests-limits
+  labels:
+    env: prod
+
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      requests:
+        memory: "200Mi"
+        cpu: "1"
+      limits:
+        memory: "1Gi"
+        cpu: "1"

@@ -1,3 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: myapp-prod
+    labels:
+        type: prod
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+          type: prod
+
+    template:
+        metadata:
+          name: myapp-prod
+          labels:
+            type: prod
+        spec:
+            containers:
+             - name: myapp-prod
+               image: nginx
+
+
+---
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,4 +46,6 @@ spec:
             containers:
              - name: myapp-demo
                image: nginx
+               command: ["echo"]
+               args: ["Hello", "World!!"]
 

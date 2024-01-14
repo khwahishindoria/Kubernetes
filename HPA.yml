@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: php-apache
+  name: php-apache
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: php-apache
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: php-apache
+    spec:
+      containers:
+      - image: registry.k8s.io/hpa-example
+        name: hpa-example
+        resources:
+           requests:
+             cpu: 200m
+           limits:
+             cpu: 500m
+
+status: {}
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: php-apache
+  name: php-apache
+  namespace: default
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: php-apache
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busybox
+  name: busybox
+spec:
+  containers:
+  - command: ["/bin/sh"]
+    args: ["-c", "while sleep 0.01; do wget -q -O- http://10.96.80.253; done"]
+    image: busybox:1.28
+    name: busybox
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+kubectl expose deployment php-apache --port 80 --name php-apache --target-port 80 --type ClusterIP
+
+kubectl autoscale deployment php-apache --cpu-percent 50 --min 3 --max 10
