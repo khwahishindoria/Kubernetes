@@ -16,7 +16,8 @@ Configure kubeadm manually
 		
 		
 		 kubeadm init --apiserver-advertise-address 10.0.0.4 --pod-network-cidr 10.244.0.0/24
-		 
+		 ####To ignore CPU and memory error 
+		kubeadm init --apiserver-advertise-address 10.0.1.129 --pod-network-cidr 10.244.0.0/24 --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem
 		 
 		initialize flannel
 		kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
