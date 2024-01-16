@@ -2,6 +2,7 @@ Configure kubeadm manually
 <
 		apt-get update
 		apt-get install docker.io -y 
+		apt-get install net-tools -y
 		sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 		mkdir -p /etc/apt/keyrings/
 		
