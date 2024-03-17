@@ -25,7 +25,18 @@ Configure kubeadm manually
 		
 		docs: https://github.com/flannel-io/flannel#deploying-flannel-manually
 
->
+		calico CNI
+		https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
+
+		kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/tigera-operator.yaml
+		curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/custom-resources.yaml 
+		## change the podCIDR in yaml 
+		vim custom-resources.yaml
+		kubectl apply -f custom-resources.yaml
+
+
+
+
 
 kubeadm init --apiserver-advertise-address $(hostname -i) --pod-network-cidr 10.5.0.0/16
 
