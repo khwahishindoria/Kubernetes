@@ -48,7 +48,7 @@ sudo chown $(id -u):$(id -u) $HOME/.kube/config
 
 yum update
 
-
+kubeadm token create --print-join-command
 
 ##alises
 
@@ -57,3 +57,5 @@ yum update
 ### Worker node
 kubeadm join 192.168.0.18:6443 --toke 11gzxw.70z9nkgzds15tr75 \
 	--discovery-token-ca-cert-hash sha256:d0
+
+
