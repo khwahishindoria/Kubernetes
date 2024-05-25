@@ -24,6 +24,7 @@ sudo apt install -y containerd.io
 sudo mkdir -p /etc/containerd
 sudo containerd config default | sudo tee /etc/containerd/config.toml
 sudo vi /etc/containerd/config.toml
+[[ {the cgroupDriver is set to systemd} ]] 
 sudo systemctl restart containerd
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
