@@ -279,6 +279,9 @@ host_master=`hostname`
 if [ "$host_master" == "master-01" ];
 then
         kubeadm init
-        sleep 60;
-        kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.30/net.yaml
+        mkdir -p /root/.kube
+        sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
+        sudo chown $(id -u):$(id -g) /root/.kube/config
+        sleep 5
+        sudo kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.30/net.yaml
 fi
