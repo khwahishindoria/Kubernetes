@@ -275,3 +275,10 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 sudo apt-get update -y
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
+host_master=`hostname`
+if [ "$host_master" == "master-01" ];
+then
+        kubeadm init
+        sleep 60;
+        kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.30/net.yaml
+fi
